@@ -34,6 +34,15 @@ app.post('/add_user', (req,res)=>{
     })
 })
 
+app.get('/users', (req,res)=>{
+    const sql = "SELECT * FROM users"
+    db.query(sql,(err,result)=>{
+        if(err) res.json({"message":"Server error"})
+        return res.json(result)
+        console.log(sql)
+    })
+})
+
 
 app.listen(port, ()=>{
     console.log("listening on port: " + port)

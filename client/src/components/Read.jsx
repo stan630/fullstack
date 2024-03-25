@@ -1,9 +1,20 @@
-import React from 'react'
+import { useEffect, useState } from "react";
+import {Link, useParams } from 'react-router-dom'
+import axios from "axios";
 
 const Read = () => {
-  return (
-    <div>Read</div>
-  )
-}
+  const [data, setData] = useState([]);
+  const {id} = useParams()
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/users/${id}`)
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
-export default Read
+  return <div></div>;
+};
+
+export default Read;
