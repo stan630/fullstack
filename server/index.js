@@ -43,6 +43,33 @@ app.get('/users', (req,res)=>{
     })
 })
 
+app.get('/get_user/:id', (req,res)=>{
+    const id = req.params.id
+    const sql = "SELECT * FROM users WHERE id = ?"
+    db.query(sql,[id], (err,result)=>{
+        if(err) res.json({"message":"Server error"})
+        return res.json(result)
+        console.log(sql)
+    })
+})
+
+app.post('/edit_user/:id', (req,res)=>{
+    const id = req.params.id
+    const sql = "UPDATE users SET `firstName`=?,`lastName`=?,`gender`=?,`email`=? WHERE id=?"
+    const values = [
+        req.body.firstName, 
+        req.body.lastName, 
+        req.body.gender, 
+        req.body.email,
+        id,
+    ]
+    db.query(sql,values, (err,result)=>{
+        if(err) 
+            return res.json({"message":"Someone fucked up" + err})
+        
+        return res.json({ success: "User added successfully"})
+    })
+})
 
 app.listen(port, ()=>{
     console.log("listening on port: " + port)
