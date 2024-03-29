@@ -53,6 +53,17 @@ app.get('/get_user/:id', (req,res)=>{
     })
 })
 
+app.delete('/delete/:id', (req,res)=>{
+    const id = req.params.id
+    const sql = "DELETE FROM users WHERE id = ?"
+    const values = [id]
+    db.query(sql,values, (err,result)=>{
+        if(err) 
+            return res.json({"message":"Server error" + err})
+        return res.json({success: "Student deleted successfully"})
+    })
+})
+
 app.post('/edit_user/:id', (req,res)=>{
     const id = req.params.id
     const sql = "UPDATE users SET `firstName`=?,`lastName`=?,`gender`=?,`email`=? WHERE id=?"

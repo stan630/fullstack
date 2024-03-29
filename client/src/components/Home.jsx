@@ -4,15 +4,27 @@ import React, { useEffect, useState } from "react";
 
 const Home = () => {
   const [data, setData] = useState([]);
+  const [deleted, setDeleted] = useState(true)
   useEffect(() => {
-    axios
+    if(deleted) {
+        setDeleted(false)
+        axios
       .get(`http://localhost:8000/users`)
       .then((res) => {
         setData(res.data);
       })
       .catch((err) => console.log(err));
-  }, []);
-
+    }
+    }, [deleted]);
+    
+    const handleDelete = (id) => {
+    axios.delete(`http://localhost:8000/delete/${id}`)
+    .then((res)=> {
+        setDeleted(true)
+    })
+    .catch((err)=> console.log(err))
+  
+}
   return (
     <div className="container-fluid bg-primary vh-100 vw-100">
       <h3>Users</h3>
@@ -48,7 +60,7 @@ const Home = () => {
                   <Link className="btn mx-2 btn-success" to={`/edit/${user.id}`}>
                     Edit
                   </Link>
-                  <button className="btn mx-2 btn-danger mx-2">Delete</button>
+                  <button onClick={()=>handleDelete(user.id)} className="btn btn-danger mx-2">Delete</button>
                 </td>
               </tr>
             );
